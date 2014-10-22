@@ -59,15 +59,36 @@ func main() {
   fmt.Println(result)
 	fmt.Printf("%s is %d years old, %d kg \n", person.Name, person.Age, person.Weight)
 
-	type Params struct {
-		Description string
-		Environment string
+	type Network struct {
+		Host string
+		Ip string
 	}
 
+	type JDK struct {
+		Version []string
+		Path []string
+	}
+
+	type DataSheet struct {
+		Description string
+		Environment string
+		OS string
+		Network Network
+		Jdk JDK
+	}
+
+
+
 	rf2, err := ioutil.ReadFile("./datasheet.json")
-	var params Params
+	var params DataSheet
 	json.Unmarshal(rf2, &params)
 	fmt.Printf("%s \n", params.Description)
 	fmt.Printf("%s \n", params.Environment)
+	fmt.Printf("%s \n", params.OS)
+	fmt.Printf("%s \n", params.Network.Host)
+	fmt.Printf("%s \n", params.Network.Ip)
+	fmt.Printf("%s \n", params.Jdk.Version[0])
+	fmt.Printf("%s \n", params.Jdk.Path[0])
+
 
 }
