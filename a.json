@@ -1,6 +1,5 @@
 {
-"name":"foobar",
-"age":13,
-"hoge":["1","hello"],
-"ho2ge":3
+  "name":"foobar",
+  "age":13,
+  "weight":45
 }
