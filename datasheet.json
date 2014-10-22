@@ -2,10 +2,10 @@
   "Description":"GlassFish Application Server",
   "Environment":"production",
   "Network":{
-    "Host":"app001",
-    "IP":"192.168.0.10"
+    "Host":["localhost.localdomain"],
+    "IP":["enp0s3", "10.0.2.15"]
   },
-  "OS":"CentOS Linux release 7.0.1406",
+  "OSName":["CentOS Linux release 7.0"],
   "JDK":{
     "Version":["1.8.0_20"],
     "Path":["/usr/java/java8"]

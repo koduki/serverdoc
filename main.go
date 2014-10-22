@@ -10,19 +10,19 @@ import (
 )
 
 type Network struct {
-	Host string
-	Ip   string
+	Host [2]string
+	Ip   [3]string
 }
 
 type JDK struct {
-	Version []string
-	Path    []string
+	Version [2]string
+	Path    [2]string
 }
 
 type DataSheet struct {
 	Description string
 	Environment string
-	OS          string
+	OSName      [2]string
 	Network     Network
 	Jdk         JDK
 }
@@ -49,18 +49,19 @@ func main() {
 
 func parse(data DataSheet) {
 
-	if data.OS != "" {
-		checkOS(data.OS)
+	if data.OSName[0] != "" {
+		assertOSName(data.OSName[0])
 	}
 
-	// if (data.Network != Network{}) {
-	// 	fmt.Printf("check %s \n", data.Network.Host)
-	// 	fmt.Printf("check %s \n", data.Network.Ip)
-	// }
+	if (data.Network != Network{}) {
+		assertNetwork(data.Network)
+	}
 }
 
-func run(command string, arg string) string {
-	cmd := exec.Command(command, arg)
+func run(command string, args ...string) string {
+	var cmd *exec.Cmd
+	cmd = exec.Command(command, args...)
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)
@@ -75,19 +76,34 @@ func run(command string, arg string) string {
 		log.Fatal(err)
 	}
 
-	return string(result)
+	return strings.TrimSpace(string(result))
 }
 
 func equals(name string, actual string, expected string) {
-	if strings.Contains(actual, expected) {
-		fmt.Printf("'%s' is '%s' \n", name, expected)
+	if actual == expected {
+		fmt.Printf("CHECKED: '%s' is '%s' \n", name, expected)
 	} else {
-		fmt.Printf("'%s' expected '%s', got '%s'\n", name, expected, actual)
+		fmt.Printf("FAILED: '%s' expected '%s', got '%s'\n", name, expected, actual)
 	}
 }
 
-func checkOS(expected string) {
-	name := "OS"
-	actual := strings.TrimSpace(run("cat", "/etc/redhat-release"))
-	equals(name, actual, expected)
+func contains(name string, actual string, expected string) {
+	if strings.Contains(actual, expected) {
+		fmt.Printf("CHECKED: '%s' contains '%s' \n", name, expected)
+	} else {
+		fmt.Printf("FAILED: '%s' expected '%s', got '%s'\n", name, expected, actual)
+	}
+}
+
+func assertOSName(expected string) {
+	actual := run("cat", "/etc/redhat-release")
+	contains("OS Name", actual, expected)
+}
+
+func assertNetwork(expected Network) {
+	actual_host := run("hostname")
+	actual_ip := run("ip", "a", "show", "dev", expected.Ip[0])
+
+	equals("Netowrk.Host", actual_host, expected.Host[0])
+	contains("Netowrk.Ip", actual_ip, expected.Ip[1])
 }
