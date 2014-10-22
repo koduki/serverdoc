@@ -11,6 +11,23 @@ import (
 //  "github.com/bitly/go-simplejson"
   //"io"
 )
+type Network struct {
+	Host string
+	Ip string
+}
+
+type JDK struct {
+	Version []string
+	Path []string
+}
+
+type DataSheet struct {
+	Description string
+	Environment string
+	OS string
+	Network Network
+	Jdk JDK
+}
 
 func main() {
 	cmd := exec.Command("ls")
@@ -59,23 +76,6 @@ func main() {
   fmt.Println(result)
 	fmt.Printf("%s is %d years old, %d kg \n", person.Name, person.Age, person.Weight)
 
-	type Network struct {
-		Host string
-		Ip string
-	}
-
-	type JDK struct {
-		Version []string
-		Path []string
-	}
-
-	type DataSheet struct {
-		Description string
-		Environment string
-		OS string
-		Network Network
-		Jdk JDK
-	}
 
 
 
@@ -89,6 +89,4 @@ func main() {
 	fmt.Printf("%s \n", params.Network.Ip)
 	fmt.Printf("%s \n", params.Jdk.Version[0])
 	fmt.Printf("%s \n", params.Jdk.Path[0])
-
-
 }
