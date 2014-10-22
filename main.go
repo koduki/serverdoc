@@ -76,9 +76,6 @@ func main() {
   fmt.Println(result)
 	fmt.Printf("%s is %d years old, %d kg \n", person.Name, person.Age, person.Weight)
 
-
-
-
 	rf2, err := ioutil.ReadFile("./datasheet.json")
 	var params DataSheet
 	json.Unmarshal(rf2, &params)
@@ -89,4 +86,19 @@ func main() {
 	fmt.Printf("%s \n", params.Network.Ip)
 	fmt.Printf("%s \n", params.Jdk.Version[0])
 	fmt.Printf("%s \n", params.Jdk.Path[0])
+
+	parse(params)
+}
+
+func parse(data DataSheet) {
+	fmt.Printf("%s \n", data.Description)
+
+  if(data.OS == ""){
+		fmt.Printf("none\n")
+	}
+	if(data.Network != Network{}){
+		fmt.Printf("check %s \n", data.Network.Host)
+		fmt.Printf("check %s \n", data.Network.Ip)
+	}
+
 }

@@ -5,7 +5,7 @@
     "Host":"app001",
     "IP":"192.168.0.10"
   },
-  "OS":"CentOS Linux release 7.0.1406",
+  "OS2":"CentOS Linux release 7.0.1406",
   "JDK":{
     "Version":["1.8.0_20"],
     "Path":["/usr/java/java8"]
