@@ -61,10 +61,13 @@ func main() {
 
 	type Params struct {
 		Description string
+		Environment string
 	}
 
 	rf2, err := ioutil.ReadFile("./datasheet.json")
 	var params Params
 	json.Unmarshal(rf2, &params)
 	fmt.Printf("%s \n", params.Description)
+	fmt.Printf("%s \n", params.Environment)
+
 }
