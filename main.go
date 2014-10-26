@@ -96,7 +96,7 @@ func contains(name string, actual string, expected string) {
 }
 
 func assertOSName(expected string) {
-	actual := run("cat", "/etc/redhat-release")
+	actual := run("uname", "-a")
 	contains("OS Name", actual, expected)
 }
 
