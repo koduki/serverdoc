@@ -15,7 +15,7 @@
     "Path":["/usr/local/glassfish4"],
     "Domain":{
       "Name":["base_domain"],
-      "Port":["8080","HTTPSではなくHTTPを利用"]
+      "Port":["8080","desc:HTTPSではなくHTTPを利用"]
     }
   },
   "Directories":[
@@ -25,6 +25,6 @@
     ["rsync"],
     ["unzip"],
     ["vim"],
-    ["git"]
+    ["git", "開発用"]
   ]
 }
