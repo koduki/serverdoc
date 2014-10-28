@@ -57,75 +57,83 @@
           return results;
         }
 
-        if (data[name].constructor === Array) {
-          if (data[name][0].constructor === Array){
-            // add header
-            var tr = $('<tr/>');
-            for (var i = 0; i < MAX_INDEX - index; i++) {
-              $("<th />").appendTo(tr);
-            }
-            $("<th class='header' />").attr('colspan', index).text(name).appendTo(tr);
-            $("<td class='header' />").appendTo(tr);
-            $("<td class='header' />").appendTo(tr);
-
-            $("#datasheet").append(tr);
-
-            // split value and comment.
-            for(var i = 0; i < data[name].length; i++) {
-              // add header
-              var tr = $('<tr/>');
-              for (var n = 0; n < MAX_INDEX - index; n++) {
-                $("<th />").appendTo(tr);
-              }
-              $("<th />").attr('colspan', index).appendTo(tr);
-
-              var columns = data[name][i]
-              // add value
-              $("<td />").text(columns[0]).appendTo(tr);
-
-              // add description
-              $("<td />").text(columns[1]).appendTo(tr);
-
-              $("#datasheet").append(tr);            }
-
-            return;
-          }
-          // add Item
-
-          // add item name
-          var tr = $('<tr class="item" />');
+        var appendName = function(tr, class_name, text, index) {
           for (var i = 0; i < MAX_INDEX - index; i++) {
             $("<th />").appendTo(tr);
           }
-          $("<th />").attr('colspan', index).text(name).appendTo(tr);
+          $("<th class='" + class_name + "' />").attr('colspan', index).text(text).appendTo(tr);
+        }
 
+        var appendHeader = function(name, index) {
+          var tr = $('<tr/>');
+          appendName(tr, 'header', name, index);
+          $("<td class='header' />").appendTo(tr);
+          $("<td class='header' />").appendTo(tr);
+
+          $("#datasheet").append(tr);
+        }
+
+        var addItem = function(name, index){
+          // add item name
+          var tr = $('<tr class="item" />');
+          appendName(tr, 'item', name, index);
           // split value and comment.
           var columns = split(data[name]);
-
           // add value
           $("<td />").text(columns[0]).appendTo(tr);
-
           // add description
           $("<td />").text(columns[1]).appendTo(tr);
 
           $("#datasheet").append(tr);
-        } else {
-          // add Layer
-          // add header
-          var tr = $('<tr/>');
-          for (var i = 0; i < MAX_INDEX - index; i++) {
-            $("<th />").appendTo(tr);
+        }
+
+        var addListItem = function(name, index){
+          // split value and comment.
+          for(var i = 0; i < data[name].length; i++) {
+            // add header
+            var tr = $('<tr/>');
+            appendName(tr, '', '', index);
+
+            var columns = split(data[name][i])
+            // add value
+            $("<td />").text(columns[0]).appendTo(tr);
+
+            // add description
+            $("<td />").text(columns[1]).appendTo(tr);
+
+            $("#datasheet").append(tr);
           }
-          $("<th class='header' />").attr('colspan', index).text(name).appendTo(tr)
-          $("<td class='header' />").appendTo(tr);
-          $("<td class='header' />").appendTo(tr);
+        }
 
-          $("#datasheet").append(tr);
+        var addListItems = function(name, index){
+          appendHeader(name, index);
+          addListItem(name, index);
+        }
 
+        var addLayer = function(name, index) {
+          // add Layer
+          appendHeader(name, index);
           // add children
           for (item in data[name]) {
             parse(data[name], item, index - 1);
           }
+        }
+
+        var isItem = function(){
+          return data[name].constructor === Array;
+        }
+
+        var isItemList = function(){
+          return (data[name][0].constructor === Array);
+        }
+
+        // parse items
+        if (isItem() && isItemList()){
+          addListItems(name, index);
+        } else if (isItem()) {
+          addItem(name, index);
+        } else {
+          addLayer(name, index);
         }
       }
 
