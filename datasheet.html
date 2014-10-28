@@ -137,18 +137,19 @@
         }
       }
 
+      var preview = function(data){
+        for (name in data) {
+          if (name === 'Description') {
+            $("header p").text(data[name]);
+          } else {
+            parse(data, name, 5);
+          }
+        }
+      }
+
       $(function(){
         $.getJSON("datasheet.json", function(data){
-          console.log(data);
-          window.testdata = data;
-
-          for (name in data) {
-            if (name === 'Description') {
-              $("header p").text(data[name]);
-            } else {
-              parse(data, name, 5);
-            }
-          }
+          preview(data);
         });
       });
     </script>
